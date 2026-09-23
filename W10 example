@@ -1,0 +1,95 @@
+autopsy - free program to analyze forenisc images
+
+[[forensics process]] link reference to .md file
+
+imaging methods could be windows copy and paste
+	this is not exact, do not use it for images for investigations
+	this option doesn't copy deleted filed and folders
+disk cloning
+	copy of drive and OS files
+	not used for forensic copies beucase lack of built in hashing
+disk imaging
+	copying a hard drive as a single file unlike cloned disk
+	contains all info on disk + free soace and slack space
+Digital forensic investigation software
+	autopsy GUI
+	windows registry recovery
+
+example
+#### Investigating the Compromised Windows 10 Client
+
+Let’s assume that you have followed the appropriate processes to collect the compromised Windows image. You will now look for indications of compromise. An Intrusion Detection System (IDS) alert notified the network security staff that a machine with the Internet Protocol (IP) address of 192.168.1.10 had been compromised. The alert on the machine was related to Server Message Block (SMB). The machine was unplugged and imaged on April 4, 2020.
+
+There are many places to look for evidence of an intrusion on a Windows system, including the following:
+
+- Event Viewer files
+    - The Windows Event Viewer shows a log of application and system message including errors, information, and warnings in Windows.
+- Registry files
+    - The Windows Registry is an extensive database of user and application settings on a Windows system.
+- Startup folder
+    - The Windows Startup folder stores the applications that will be launched by Windows when Windows boots.
+- Folders in the path C:\Windows and C:\Windows\System32
+    - These folders are where the majority of the Windows operating system files are located.
+- Scheduled Tasks folder
+    - The Tasks folder is where Windows stores the automated tasks to run when triggered.
+
+In this lab, you will examine and analyze different parts of the Windows machine to uncover evidence of compromise.
+
+
+
+# Lab steps
+opening Autopsy in Windows 10 to create a case
+using a local disk and selecting a specific drive
+navigate through directory to 
+
+windows/asystem32/winevt/logs
+security.evtx
+system.evtx
+application.evtx
+
+export these files to the folder of your choosing that's set up in autopsy
+open the files in the event viewer
+event ID 1102 is a log clear
+
+after viewing the clear log, we checked the date and noted it
+in the security event viewer we saw additional events afer the fact, trying to change passwords of admin accounts
+
+from here we checked the Tasks folder in Windows/System32/Tasks
+there were suspicious files and a daily run here like fgdump, fgexec, .pwdump files, winupdate.exe and winupdate.bat that referenced a different file that when trying to open, it couldnt' be read - looked garbled.
+
+exported the winnupdate.exe to virustotal and found netcat utility that uses a backdoor
+important destinations
+C:\
+C:\Windows
+System32
+
+Startup Folder
+
+
+Tasks Folder
+system32/tasks
+
+summary
+event viewer files - windows/windows32/winevt
+
+registry files - windows/system32/config
+
+startup folder - C:/programdata/microsoft/windows/start menu/programs/startup
+
+the path - C:/Windows and C:.windows/system32
+
+scheduled tasks folder - C:/windows/system32/tasks
+
+WRR.exe on desktop - MiTeC Windows Registry Recovery
+
+looking at SAM in WRR, we see the groups and users in the registry
+there are 2 administrator accounts and one of them has an SID ending in 1003
+however, built in administartors always have an SID ending in 500
+this was maybe created using utilman.exe
+also, the attacker machine was local (192.168.1.50)
+
+we have opened all the log files we acquired from the windows machine, SAM, SYSTEM, and SECURITY
+
+Security didn't really show anything
+SYSTEM also just confirmed network and system procs
+
