@@ -1,0 +1,35 @@
+collection
+examination
+analysis
+reporting
+media -> data -> info -> evidence
+
+chain of custody is critical here
+docuement the way digital evidence has been handled
+when we secure, transport, verify items
+
+digital evidence:
+emails
+user accounts
+digital video, audio, photos
+Instant messages
+web browse history
+files
+RAM
+registry
+backups
+logs
+
+collection
+	identify, label, record, acquire data 
+examinatiion
+	forensically sound ways to collect data
+	preserve integrity
+	document coc
+analysis
+	legally justifiable methods and techniques
+reporting
+	explained use of tools
+	description of nalysis of different data sources
+	issues and vulnerabilities identified
+	recommendations
